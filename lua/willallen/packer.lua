@@ -80,6 +80,13 @@ return require('packer').startup(function(use)
     use('rcarriga/nvim-dap-ui')
     use('theHamsta/nvim-dap-virtual-text')
     use('nvim-telescope/telescope-dap.nvim')
+    -- -- js
+    use {
+        "microsoft/vscode-js-debug",
+        opt = true,
+        run = "npm install --legacy-peer-deps && npm run compile"
+    }
+    use { "mxsdev/nvim-dap-vscode-js", requires = {"mfussenegger/nvim-dap"} }
     -- end DAP
 
 	-- Dart/Flutter

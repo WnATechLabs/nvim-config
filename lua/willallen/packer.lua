@@ -11,12 +11,7 @@ return require('packer').startup(function(use)
 	-- Packer can manage itself
 	use('wbthomason/packer.nvim')
 
-	use {
-		'nvim-telescope/telescope.nvim', tag = '0.1.0',
-		-- or                            , branch = '0.1.x',
-		requires = { {'nvim-lua/plenary.nvim'} }
-	}
-
+    -- Themes
 	use({
 		'rose-pine/neovim',
 		as = 'rose-pine'
@@ -28,6 +23,14 @@ return require('packer').startup(function(use)
 			vim.cmd("colorscheme nightfox")
 		end
 	})
+    -- end themes
+
+    -- General plugins to make my life easier
+    use {
+        'nvim-telescope/telescope.nvim', tag = '0.1.0',
+        -- or                            , branch = '0.1.x',
+        requires = { {'nvim-lua/plenary.nvim'} }
+    }
 
 	use('nvim-treesitter/nvim-treesitter', {run = ':TSUpdate'})
 
@@ -39,6 +42,15 @@ return require('packer').startup(function(use)
 
 	use('tpope/vim-fugitive')
 
+    use({
+        "Pocco81/auto-save.nvim",
+        config = function()
+            require("auto-save").setup {}
+        end,
+    })
+    -- end general plugins
+
+    -- LSP
 	use {
 		'VonHeikemen/lsp-zero.nvim',
 		requires = {
@@ -61,15 +73,16 @@ return require('packer').startup(function(use)
 			{'rafamadriz/friendly-snippets'},
 		}
 	}
+    -- end LSP
 
-    -- dap
+    -- DAP
     use('mfussenegger/nvim-dap')
-    -- use('leoluz/nvim-dap-go')
     use('rcarriga/nvim-dap-ui')
     use('theHamsta/nvim-dap-virtual-text')
     use('nvim-telescope/telescope-dap.nvim')
+    -- end DAP
 
-	--Dart/Flutter
+	-- Dart/Flutter
 	-- use('dart-lang/dart-vim-plugin')
 	-- use('thosakwe/vim-flutter')
 

@@ -48,6 +48,24 @@ return require('packer').startup(function(use)
             require("auto-save").setup {}
         end,
     })
+
+    use({
+        "kylechui/nvim-surround",
+        tag = "*", -- Use for stability; omit to use `main` branch for the latest features
+        config = function()
+            require("nvim-surround").setup({
+                -- Configuration here, or leave empty to use defaults
+            })
+        end
+    })
+
+    use({
+        "terrortylor/nvim-comment",
+        config = function()
+            require('nvim_comment').setup()
+        end
+    })
+
     -- end general plugins
 
     -- LSP
@@ -76,21 +94,9 @@ return require('packer').startup(function(use)
     -- end LSP
 
     -- DAP
-    use('mfussenegger/nvim-dap')
-    use('rcarriga/nvim-dap-ui')
-    use('theHamsta/nvim-dap-virtual-text')
-    use('nvim-telescope/telescope-dap.nvim')
-    -- -- js
-    use {
-        "microsoft/vscode-js-debug",
-        opt = true,
-        run = "npm install --legacy-peer-deps && npm run compile"
-    }
-    use { "mxsdev/nvim-dap-vscode-js", requires = {"mfussenegger/nvim-dap"} }
+    -- use ('mfussenegger/nvim-dap')
+    -- use ('rcarriga/nvim-dap-ui')
+    -- use ('ms-vscode/vscode-js-debug')
     -- end DAP
-
-    -- Dart/Flutter
-    -- use('dart-lang/dart-vim-plugin')
-    -- use('thosakwe/vim-flutter')
-
 end)
+

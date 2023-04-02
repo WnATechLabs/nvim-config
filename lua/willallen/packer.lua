@@ -66,6 +66,8 @@ return require('packer').startup(function(use)
         end
     })
 
+    use ('gerazov/toggle-bool.nvim')
+
     -- end general plugins
 
     -- LSP

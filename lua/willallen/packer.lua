@@ -98,9 +98,18 @@ return require('packer').startup(function(use)
     -- end LSP
 
     -- DAP
-    -- use ('mfussenegger/nvim-dap')
-    -- use ('rcarriga/nvim-dap-ui')
-    -- use ('ms-vscode/vscode-js-debug')
+    use {
+        "mfussenegger/nvim-dap",
+        opt = true,
+        module = { "dap" },
+        requires = {
+            "theHamsta/nvim-dap-virtual-text",
+            "rcarriga/nvim-dap-ui",
+            "nvim-telescope/telescope-dap.nvim",
+            -- { "jbyuki/one-small-step-for-vimkind", module = "osv" },
+        },
+        disable = false,
+    }
     -- end DAP
 end)
 

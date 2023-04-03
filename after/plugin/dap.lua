@@ -30,6 +30,43 @@ for _, language in ipairs { "typescript", "javascript" } do
             processId = require("dap.utils").pick_process,
             cwd = "${workspaceFolder}",
         },
+        {
+            type = "node2",
+            request = "launch",
+            name = "Launch file",
+            program = "${file}",
+            cwd = "${workspaceFolder}",
+        },
+        {
+            type = "node2",
+            request = "launch",
+            name = "Debug Jest Tests",
+            -- trace = true, -- include debugger info
+            runtimeExecutable = "node",
+            runtimeArgs = {
+                "./node_modules/jest/bin/jest.js",
+                "--runInBand",
+            },
+            rootPath = "${workspaceFolder}",
+            cwd = "${workspaceFolder}",
+            console = "integratedTerminal",
+            internalConsoleOptions = "neverOpen",
+
+        },
+        {
+            type = "node2",
+            request = "launch",
+            name = "Debug Mocha Tests",
+            -- trace = true, -- include debugger info
+            runtimeExecutable = "node",
+            runtimeArgs = {
+                "./node_modules/mocha/bin/mocha.js",
+            },
+            rootPath = "${workspaceFolder}",
+            cwd = "${workspaceFolder}",
+            console = "integratedTerminal",
+            internalConsoleOptions = "neverOpen",
+        }
     }
 end
 

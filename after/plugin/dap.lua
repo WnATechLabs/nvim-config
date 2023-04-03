@@ -83,6 +83,14 @@ dap.listeners.after.event_exited["dapui_config"] = function()
     dapui.close()
 end
 
+require("nvim-dap-virtual-text").setup({
+    show_hover = true,
+    show_virtual_text = true,
+    virtual_text_prefix = "🧐",
+    virtual_text_position = "eol",
+    virtual_text_lines = 10,
+    virtual_text_source = "always",
+})
 
 -- Set up nvim-dap UI
 dapui.setup({

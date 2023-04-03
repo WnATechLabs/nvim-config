@@ -26,6 +26,8 @@ return require('packer').startup(function(use)
     -- end themes
 
     -- General plugins to make my life easier
+    use('github/copilot.vim')
+
     use {
         'nvim-telescope/telescope.nvim', tag = '0.1.0',
         -- or                            , branch = '0.1.x',

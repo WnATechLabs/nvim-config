@@ -12,17 +12,19 @@ vim.keymap.set("n", "<leader>dr", ":lua require'dap'.repl.open()<CR>")
 --config
 
 vim.fn.sign_define('DapBreakpoint', { text = '🛑', texthl = '', linehl = '', numhl = '' })
-vim.fn.sign_define('DapStopped', { text = '🔎', texthl = '', linehl = '', numhl = '' })
+vim.fn.sign_define('DapStopped', { text = '➡️', texthl = '', linehl = '', numhl = '' })
 
-require('dap').adapters.node2 = {
+local dap, dapui = require("dap"), require("dapui")
+
+dap.adapters.node2 = {
         type = "executable",
         command = "node-debug2-adapter",
         args = {}
     }
-require('dap').set_log_level('trace')
+dap.set_log_level('trace')
 
 for _, language in ipairs { "typescript", "javascript" } do
-    require("dap").configurations[language] = {
+    dap.configurations[language] = {
         {
             type = 'node2',
             request = "attach",
@@ -70,9 +72,20 @@ for _, language in ipairs { "typescript", "javascript" } do
     }
 end
 
+-- Dap event listeners
+dap.listeners.after.event_initialized["dapui_config"] = function()
+    dapui.open()
+end
+dap.listeners.after.event_terminated["dapui_config"] = function()
+    dapui.close()
+end
+dap.listeners.after.event_exited["dapui_config"] = function()
+    dapui.close()
+end
+
 
 -- Set up nvim-dap UI
-require("dapui").setup({
+dapui.setup({
     icons = { expanded = "", collapsed = "", current_frame = "" },
     mappings = {
         -- Use a table to apply multiple mappings

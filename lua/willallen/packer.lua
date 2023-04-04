@@ -70,6 +70,12 @@ return require('packer').startup(function(use)
 
     use ('gerazov/toggle-bool.nvim')
 
+    -- -- HTTP Client
+    use {
+        "rest-nvim/rest.nvim",
+        requires = { "nvim-lua/plenary.nvim" },
+    }
+
     -- end general plugins
 
     -- LSP

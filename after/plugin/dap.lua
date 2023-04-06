@@ -13,6 +13,12 @@ vim.keymap.set("n", "<leader>dr", ":lua require'dap'.repl.open()<CR>")
 
 vim.fn.sign_define('DapBreakpoint', { text = '🛑', texthl = '', linehl = '', numhl = '' })
 vim.fn.sign_define('DapStopped', { text = '➡️', texthl = '', linehl = '', numhl = '' })
+vim.fn.sign_define('DapLogPoint', { text = '📝', texthl = '', linehl = '', numhl = '' })
+vim.fn.sign_define('DapStoppedThreads', { text = '☠️', texthl = '', linehl = '', numhl = '' })
+vim.fn.sign_define('DapBreakpointRejected', { text = '❌', texthl = '', linehl = '', numhl = '' })
+vim.fn.sign_define('DapBreakpointCondition', { text = '🤔', texthl = '', linehl = '', numhl = '' })
+vim.fn.sign_define('DapBreakpointLogMessage', { text = '📣', texthl = '', linehl = '', numhl = '' })
+
 
 local dap, dapui = require("dap"), require("dapui")
 
@@ -36,24 +42,27 @@ for _, language in ipairs { "typescript", "javascript" } do
             type = "node2",
             request = "launch",
             name = "Launch file",
-            program = "${file}",
-            cwd = "${workspaceFolder}",
+            program = "${workspaceFolder}/node_modules/.bin/nodemon",
+            cwd = vim.fn.getcwd(),
+            sourceMaps = true,
+            protocol = 'inspector',
+            internalConsoleOptions = 'neverOpen',
+            args = {},
         },
         {
-            type = "node2",
-            request = "launch",
-            name = "Debug Jest Tests",
-            -- trace = true, -- include debugger info
-            runtimeExecutable = "node",
-            runtimeArgs = {
-                "./node_modules/jest/bin/jest.js",
-                "--runInBand",
+            type = 'node2',
+            request = 'launch',
+            name = 'Jest tests',
+            program = '${workspaceFolder}/node_modules/.bin/jest',
+            cwd = vim.fn.getcwd(),
+            sourceMaps = true,
+            protocol = 'inspector',
+            console = 'integratedTerminal',
+            internalConsoleOptions = 'neverOpen',
+            args = {},
+            env = {
+                NODE_ENV = 'test',
             },
-            rootPath = "${workspaceFolder}",
-            cwd = "${workspaceFolder}",
-            console = "integratedTerminal",
-            internalConsoleOptions = "neverOpen",
-
         },
         {
             type = "node2",
@@ -76,12 +85,12 @@ end
 dap.listeners.after.event_initialized["dapui_config"] = function()
     dapui.open()
 end
-dap.listeners.after.event_terminated["dapui_config"] = function()
-    dapui.close()
-end
-dap.listeners.after.event_exited["dapui_config"] = function()
-    dapui.close()
-end
+-- dap.listeners.after.event_terminated["dapui_config"] = function()
+--     dapui.close()
+-- end
+-- dap.listeners.after.event_exited["dapui_config"] = function()
+--     dapui.close()
+-- end
 
 require("nvim-dap-virtual-text").setup({
     show_hover = true,
@@ -94,7 +103,7 @@ require("nvim-dap-virtual-text").setup({
 
 -- Set up nvim-dap UI
 dapui.setup({
-    icons = { expanded = "", collapsed = "", current_frame = "" },
+    icons = { expanded = "▼", collapsed = "❯", current_frame = "⸰" },
     mappings = {
         -- Use a table to apply multiple mappings
         expand = { "<CR>", "<2-LeftMouse>" },
@@ -149,14 +158,14 @@ dapui.setup({
             -- Display controls in this element
             element = "repl",
             icons = {
-                pause = "",
-                play = "",
-                step_into = "",
-                step_over = "",
-                step_out = "",
-                step_back = "",
-                run_last = "",
-                terminate = "",
+                pause = "⏸️",
+                play = "▶️",
+                step_into = "⬇️",
+                step_over = "⤵️",
+                step_out = "⬆️",
+                step_back = "⬅️",
+                run_last = "🔁",
+                terminate = "🔴",
             },
         },
         floating = {

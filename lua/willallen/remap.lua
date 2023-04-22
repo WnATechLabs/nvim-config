@@ -39,6 +39,8 @@ vim.keymap.set("n", "<leader>sv", "<cmd>vsplit<CR>")
 vim.keymap.set("n", "<leader>sh", "<cmd>split<CR>")
 vim.keymap.set("n", "<leader>sc", "<cmd>close<CR>")
 vim.keymap.set("n", "<leader>so", "<cmd>only<CR>")
+vim.keymap.set("n", "<leader>ss", "<C-w>R")
+
 -- -- Use ctrl + up/down/left/right to resize windows by 3
 vim.keymap.set("n", "<C-Up>", "<cmd>resize -3<CR>")
 vim.keymap.set("n", "<C-Down>", "<cmd>resize +3<CR>")
@@ -49,3 +51,6 @@ vim.keymap.set("n", "<C-h>", "<C-w>h")
 vim.keymap.set("n", "<C-j>", "<C-w>j")
 vim.keymap.set("n", "<C-k>", "<C-w>k")
 vim.keymap.set("n", "<C-l>", "<C-w>l")
+
+-- Format json (this way we can format json scratch buffers)
+vim.keymap.set("n", "<leader>fj", "<cmd>silent %!jq '.'<CR>")

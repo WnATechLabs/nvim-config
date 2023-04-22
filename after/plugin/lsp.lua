@@ -22,9 +22,17 @@ lsp.configure('lua_ls', {
 lsp.configure('dartls', {
     force_setup = true,
     on_attach = function()
-        print('hello dartls')
+        print('attached to dartls')
     end,
 })
+
+
+-- lsp.configure('json-lsp', {
+--     force_setup = true,
+--     on_attach = function()
+--         print('hello dartls')
+--     end,
+-- })
 
 local cmp = require('cmp')
 local cmp_select = { behavior = cmp.SelectBehavior.Select }
@@ -73,7 +81,11 @@ lsp.on_attach(function(client, bufnr)
     vim.keymap.set("n", "<leader>vrr", vim.lsp.buf.references, opts)
     vim.keymap.set("n", "<leader>vrn", vim.lsp.buf.rename, opts)
     vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, opts)
+    -- Code folding
     vim.opt.foldcolumn = '2'
+    vim.opt.foldlevel = 20
+    vim.opt.foldmethod = "expr"
+    vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 end)
 
 lsp.setup()

@@ -4,7 +4,8 @@ local ui = require("harpoon.ui")
 vim.keymap.set("n", "<leader>a", mark.add_file)
 vim.keymap.set("n", "<C-e>", ui.toggle_quick_menu)
 
-vim.keymap.set("n", "<C-S-u>", function() ui.nav_file(1) end)
-vim.keymap.set("n", "<C-S-i>", function() ui.nav_file(2) end)
-vim.keymap.set("n", "<C-S-o>", function() ui.nav_file(3) end)
-vim.keymap.set("n", "<C-S-p>", function() ui.nav_file(4) end)
+-- TODO: fix harpoon remaps
+vim.keymap.set("n", "<leader><leader>h", function() ui.nav_file(1) end)
+vim.keymap.set("n", "<leader><leader>j", function() ui.nav_file(2) end)
+vim.keymap.set("n", "<leader><leader>k", function() ui.nav_file(3) end)
+vim.keymap.set("n", "<leader><leader>l", function() ui.nav_file(4) end)

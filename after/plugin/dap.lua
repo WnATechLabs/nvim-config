@@ -3,6 +3,7 @@ vim.keymap.set("n", "<F7>", ":lua require'dap'.step_into()<CR>")
 vim.keymap.set("n", "<F8>", ":lua require'dap'.step_over()<CR>")
 vim.keymap.set("n", "<F9>", ":lua require'dap'.continue()<CR>")
 vim.keymap.set("n", "<C-F8>", ":lua require'dap'.step_out()<CR>")
+vim.keymap.set("n", "<leader>du", ":lua require'dapui'.toggle()<CR>")
 
 vim.keymap.set("n", "<leader>b", ":lua require'dap'.toggle_breakpoint()<CR>")
 vim.keymap.set("n", "<leader>B", ":lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>")
@@ -23,10 +24,10 @@ vim.fn.sign_define('DapBreakpointLogMessage', { text = '📣', texthl = '', line
 local dap, dapui = require("dap"), require("dapui")
 
 dap.adapters.node2 = {
-        type = "executable",
-        command = "node-debug2-adapter",
-        args = {}
-    }
+    type = "executable",
+    command = "node-debug2-adapter",
+    args = {}
+}
 dap.set_log_level('trace')
 
 for _, language in ipairs { "typescript", "javascript" } do
@@ -34,7 +35,35 @@ for _, language in ipairs { "typescript", "javascript" } do
         {
             type = 'node2',
             request = "attach",
-            name = "Attach",
+            name = "Attach debugger Alpha",
+            processId = require("dap.utils").pick_process,
+            cwd = "${workspaceFolder}",
+        },
+        {
+            type = 'node2',
+            request = 'attach',
+            name = 'Attach debugger to webpack with port',
+            protocol = 'inspector',
+            address = 'localhost',
+            port = function()
+                local input = vim.fn.input('Port: ')
+                if input ~= '' then
+                    return tonumber(input)
+                else
+                    return nil
+                end
+            end,
+            cwd = '${workspaceFolder}',
+            sourceMaps = true, -- enable source maps for debugging compiled code
+            restart = true,    -- automatically reconnect to the new process after it's restarted
+            protocolCommand = 'runtime',
+            protocolArgs = { '${workspaceFolder}/node_modules/webpack-dev-server/bin/webpack-dev-server.js',
+                '--mode', 'development', '--config', '{workspaceFolder}/webpack.config.js' },
+        },
+        {
+            type = 'node2',
+            request = "attach",
+            name = "Attach debugger Beta",
             processId = require("dap.utils").pick_process,
             cwd = "${workspaceFolder}",
         },
@@ -117,69 +146,68 @@ dapui.setup({
     element_mappings = {
         -- Example:
         -- stacks = {
-            --   open = "<CR>",
-            --   expand = "o",
-            -- }
-        },
-        -- Expand lines larger than the window
-        -- Requires >= 0.7
-        expand_lines = vim.fn.has("nvim-0.7") == 1,
-        -- Layouts define sections of the screen to place windows.
-        -- The position can be "left", "right", "top" or "bottom".
-        -- The size specifies the height/width depending on position. It can be an Int
-        -- or a Float. Integer specifies height/width directly (i.e. 20 lines/columns) while
-        -- Float value specifies percentage (i.e. 0.3 - 30% of available lines/columns)
-        -- Elements are the elements shown in the layout (in order).
-        -- Layouts are opened in order so that earlier layouts take priority in window sizing.
-        layouts = {
-            {
-                elements = {
-                    -- Elements can be strings or table with id and size keys.
-                    { id = "scopes", size = 0.25 },
-                    "breakpoints",
-                    "stacks",
-                    "watches",
-                },
-                size = 40, -- 40 columns
-                position = "left",
+        --   open = "<CR>",
+        --   expand = "o",
+        -- }
+    },
+    -- Expand lines larger than the window
+    -- Requires >= 0.7
+    expand_lines = vim.fn.has("nvim-0.7") == 1,
+    -- Layouts define sections of the screen to place windows.
+    -- The position can be "left", "right", "top" or "bottom".
+    -- The size specifies the height/width depending on position. It can be an Int
+    -- or a Float. Integer specifies height/width directly (i.e. 20 lines/columns) while
+    -- Float value specifies percentage (i.e. 0.3 - 30% of available lines/columns)
+    -- Elements are the elements shown in the layout (in order).
+    -- Layouts are opened in order so that earlier layouts take priority in window sizing.
+    layouts = {
+        {
+            elements = {
+                -- Elements can be strings or table with id and size keys.
+                { id = "scopes", size = 0.25 },
+                "breakpoints",
+                "stacks",
+                "watches",
             },
-            {
-                elements = {
-                    "repl",
-                    "console",
-                },
-                size = 0.25, -- 25% of total lines
-                position = "bottom",
-            },
+            size = 40, -- 40 columns
+            position = "left",
         },
-        controls = {
-            -- Requires Neovim nightly (or 0.8 when released)
-            enabled = true,
-            -- Display controls in this element
-            element = "repl",
-            icons = {
-                pause = "⏸️",
-                play = "▶️",
-                step_into = "⬇️",
-                step_over = "⤵️",
-                step_out = "⬆️",
-                step_back = "⬅️",
-                run_last = "🔁",
-                terminate = "🔴",
+        {
+            elements = {
+                "repl",
+                "console",
             },
+            size = 0.25, -- 25% of total lines
+            position = "bottom",
         },
-        floating = {
-            max_height = nil, -- These can be integers or a float between 0 and 1.
-            max_width = nil, -- Floats will be treated as percentage of your screen.
-            border = "single", -- Border style. Can be "single", "double" or "rounded"
-            mappings = {
-                close = { "q", "<Esc>" },
-            },
+    },
+    controls = {
+        -- Requires Neovim nightly (or 0.8 when released)
+        enabled = true,
+        -- Display controls in this element
+        element = "repl",
+        -- icons = {
+        --     pause = "⏸️",
+        --     play = "▶️",
+        --     step_into = "⬇️",
+        --     step_over = "⤵️",
+        --     step_out = "⬆️",
+        --     step_back = "⬅️",
+        --     run_last = "🔁",
+        --     terminate = "🔴",
+        -- },
+    },
+    floating = {
+        max_height = nil,  -- These can be integers or a float between 0 and 1.
+        max_width = nil,   -- Floats will be treated as percentage of your screen.
+        border = "single", -- Border style. Can be "single", "double" or "rounded"
+        mappings = {
+            close = { "q", "<Esc>" },
         },
-        windows = { indent = 1 },
-        render = {
-            max_type_length = nil, -- Can be integer or nil.
-            max_value_lines = 100, -- Can be integer or nil.
-        }
-    })
-
+    },
+    windows = { indent = 1 },
+    render = {
+        max_type_length = nil, -- Can be integer or nil.
+        max_value_lines = 100, -- Can be integer or nil.
+    }
+})

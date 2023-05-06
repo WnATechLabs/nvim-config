@@ -16,7 +16,7 @@ return require('packer').startup(function(use)
     as = 'rose-pine'
   })
 
-  use({"EdenEast/nightfox.nvim"})
+  use({ "EdenEast/nightfox.nvim" })
   -- end themes
 
   -- General plugins to make my life easier
@@ -47,7 +47,7 @@ return require('packer').startup(function(use)
 
   use({
     "kylechui/nvim-surround",
-    tag = "*",     -- Use for stability; omit to use `main` branch for the latest features
+    tag = "*", -- Use for stability; omit to use `main` branch for the latest features
     config = function()
       require("nvim-surround").setup({
         -- Configuration here, or leave empty to use defaults
@@ -87,7 +87,7 @@ return require('packer').startup(function(use)
     end
   }
 
-  use ('RRethy/vim-illuminate')
+  use('RRethy/vim-illuminate')
 
   use({
     "NTBBloodbath/galaxyline.nvim",

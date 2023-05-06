@@ -6,7 +6,6 @@ lsp.ensure_installed({
   'tsserver',
   'eslint',
   'lua_ls',
-  'dartls',
 })
 
 -- Fix Undefined global 'vim'
@@ -19,14 +18,6 @@ lsp.configure('lua_ls', {
     }
   }
 })
-
-lsp.configure('dartls', {
-  force_setup = true,
-  on_attach = function()
-    print('attached to dartls')
-  end,
-})
-
 
 -- lsp.configure('json-lsp', {
 --     force_setup = true,

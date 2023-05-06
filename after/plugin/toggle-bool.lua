@@ -1,1 +1,1 @@
-vim.keymap.set("n", "<leader>t", ":lua require('toggle-bool').toggle_bool()<CR>")
+vim.keymap.set("n", "<leader>tg", ":lua require('toggle-bool').toggle_bool()<CR>")
